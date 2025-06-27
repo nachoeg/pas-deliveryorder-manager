@@ -17,7 +17,7 @@ run_tests:
 # Job para la construcción de la imagen Docker
 build_image:
   stage: build
-  image: maven:3.9.6-eclipse-temurin-17  # Imagen Maven para el build
+  image: docker:cli  # Usamos una imagen con Docker CLI
   services:
     - docker:dind  # Habilitar Docker-in-Docker
   variables:
@@ -25,29 +25,25 @@ build_image:
   before_script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY  # Login en el registry Docker
   script:
-    - mvn clean install -DskipTests  # Compilar el proyecto
     - docker build --pull -t "$DOCKER_IMAGE_NAME" .  # Construir la imagen Docker
     - docker push "$DOCKER_IMAGE_NAME"  # Subir la imagen al registry Docker
     - |
-      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
-        # Etiquetar como 'latest' en main
+      # Etiquetado y Push solo si estamos en 'main' o 'develop'
+      if [[ "$CI_COMMIT_BRANCH" == "main" || "$CI_COMMIT_BRANCH" == "develop" ]]; then
+        # Etiquetar como 'latest' en main y develop
         docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
         docker push "$CI_REGISTRY_IMAGE:latest"
         
-        # Agregar versión semántica en 'main'
-        VERSION_TAG=$(git describe --tags --abbrev=0 || echo "v1.0.3")
-        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:$VERSION_TAG"
-        docker push "$CI_REGISTRY_IMAGE:$VERSION_TAG"
+        # Agregar versionado semántico en 'main' (solo en la rama main)
+        if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+          VERSION_TAG=$(git describe --tags --abbrev=0 || echo "v1.0.3")
+          docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:$VERSION_TAG"
+          docker push "$CI_REGISTRY_IMAGE:$VERSION_TAG"
+        fi
       fi
 
-      if [[ "$CI_COMMIT_BRANCH" == "develop" ]]; then
-        # Etiquetar como 'latest' en develop
-        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
-        docker push "$CI_REGISTRY_IMAGE:latest"
-      fi
-
+      # En feature/tp5 el nombre de la rama + hash del commit
       if [[ "$CI_COMMIT_BRANCH" == "feature/tp5" ]]; then
-        # En feature/tp5 usar el nombre de la rama + hash del commit
         docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:feature-tp5-$CI_COMMIT_SHA"
         docker push "$CI_REGISTRY_IMAGE:feature-tp5-$CI_COMMIT_SHA"
       fi
