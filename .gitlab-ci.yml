@@ -1,0 +1,54 @@
+stages:
+  - build
+  - test
+  - deploy
+
+# Job para la construcción de la imagen Docker
+build_image:
+  stage: build
+  image: maven:3.9.6-eclipse-temurin-17
+  services:
+    - docker:dind
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG
+  before_script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+  script:
+    # Construir el proyecto Maven
+    - mvn clean install -DskipTests
+    
+    # Construir la imagen Docker usando el nombre de la rama y el hash del commit
+    - docker build --pull -t "$DOCKER_IMAGE_NAME" .
+    - docker push "$DOCKER_IMAGE_NAME"
+    
+    # Etiquetado y Push solo si estamos en 'main' o 'feature/tp5'
+    - |
+      if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
+        # Etiquetar con la versión más reciente (tag de Git)
+        VERSION_TAG=$(git describe --tags --abbrev=0 || echo "v0.0.0")  # Obtener la última etiqueta (versión) o usar una por defecto
+        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:$VERSION_TAG"
+        docker push "$CI_REGISTRY_IMAGE:$VERSION_TAG"
+        
+        # Etiquetar también con 'latest' en 'main'
+        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
+        docker push "$CI_REGISTRY_IMAGE:latest"
+        
+      elif [[ "$CI_COMMIT_BRANCH" == "feature/tp5" ]]; then
+        # En feature/tp5 usamos el nombre de la rama + hash del commit
+        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:feature-tp5-$CI_COMMIT_SHA"
+        docker push "$CI_REGISTRY_IMAGE:feature-tp5-$CI_COMMIT_SHA"
+      fi
+  only:
+    - main
+    - feature/tp5
+  allow_failure: false
+
+# Job para ejecutar los tests
+run_tests:
+  stage: test
+  image: maven:3.9.6-eclipse-temurin-17
+  script:
+    - mvn test
+  only:
+    - main
+    - feature/tp5
