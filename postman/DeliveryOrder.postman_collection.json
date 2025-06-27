@@ -1,0 +1,382 @@
+{
+	"info": {
+		"_postman_id": "5f8956a9-b749-413c-b2ff-eb8c9e6122f2",
+		"name": "DeliveryOrder",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24660886"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders?status=PENDING_ORDER",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders?status=PENDING_ORDER",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "PENDING_ORDER"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders?status=DELIVERED_ORDER",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders?status=DELIVERED_ORDER",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "DELIVERED_ORDER"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders?status=CANCELLED_ORDER",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders?status=CANCELLED_ORDER",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders"
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "CANCELLED_ORDER"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/buyer/1",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/buyer/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"buyer",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/buyer/2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/buyer/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"buyer",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/buyer/99",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/buyer/99",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"buyer",
+						"99"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/deliver/1",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/deliver/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"deliver",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/deliver/2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/deliver/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"deliver",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"buyerId\": 1,\r\n  \"cardItemId\": 1001,\r\n  \"status\": \"PENDING_ORDER\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/1/pick?deliver_id=2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/1/pick?deliver_id=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"1",
+						"pick"
+					],
+					"query": [
+						{
+							"key": "deliver_id",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/1/deliver?deliver_id=2",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/1/deliver",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"1",
+						"deliver"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/1/cancel",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "PATCH",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/1/cancel",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"1",
+						"cancel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/deliveryorder-manager/api/orders/1/qualify",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"productStarts\": 5,\r\n  \"sellerStarts\": 4,\r\n  \"deliveryStarts\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/deliveryorder-manager/api/orders/1/qualify",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"deliveryorder-manager",
+						"api",
+						"orders",
+						"1",
+						"qualify"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
