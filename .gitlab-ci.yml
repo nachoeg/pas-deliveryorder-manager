@@ -12,7 +12,6 @@ run_tests:
   only:
     - main
     - develop
-    - feature/tp5
 
 # Job para la construcción de la imagen Docker
 build_image:
@@ -33,21 +32,16 @@ build_image:
         # Etiquetar como 'latest' en main y develop
         docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:latest"
         docker push "$CI_REGISTRY_IMAGE:latest"
-        
+      
         # Agregar versionado semántico en 'main' (solo en la rama main)
         if [[ "$CI_COMMIT_BRANCH" == "main" ]]; then
-          VERSION_TAG=$(git describe --tags --abbrev=0 || echo "v1.0.3")
+          VERSION_TAG=$(git describe --tags --abbrev=0 || echo "v1.0.0")
           docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:$VERSION_TAG"
           docker push "$CI_REGISTRY_IMAGE:$VERSION_TAG"
         fi
       fi
 
-      # En feature/tp5 el nombre de la rama + hash del commit
-      if [[ "$CI_COMMIT_BRANCH" == "feature/tp5" ]]; then
-        docker tag "$DOCKER_IMAGE_NAME" "$CI_REGISTRY_IMAGE:feature-tp5-$CI_COMMIT_SHA"
-        docker push "$CI_REGISTRY_IMAGE:feature-tp5-$CI_COMMIT_SHA"
-      fi
+
   only:
     - main
     - develop
-    - feature/tp5

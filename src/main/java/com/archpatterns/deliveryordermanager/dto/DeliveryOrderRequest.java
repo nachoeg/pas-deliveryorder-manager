@@ -28,4 +28,8 @@ public class DeliveryOrderRequest {
     private DeliveryStatus status;
 
     private Long cardItemId; 
+
+    private Double priceTotal;
+    
+    private String productName;
 }

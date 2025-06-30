@@ -22,11 +22,6 @@ public class SecurityConfig {
     private static final String ROLE_PREFIX = "ROLE_";
 
     private static final String[] WHITELIST = {
-            "/deliveryorder-manager/api/orders",
-            "/deliveryorder-manager/api/orders/",
-            "/deliveryorder-manager/api/orders**",
-            "/deliveryorder-manager/api/orders/buyer/*",
-            "/deliveryorder-manager/api/orders/deliver/*",
             "/manage/health",
             "/swagger-ui/**",
             "/v3/api-docs/**",
@@ -42,19 +37,40 @@ public class SecurityConfig {
         http.csrf().disable()
                 .authorizeHttpRequests(auth -> auth
         .requestMatchers(WHITELIST).permitAll() // Esto permite GET, POST, PATCH, etc. en esos paths
-        //ASI TIENEN QUE SER CON AUTENTICACION
-        //.requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/pick").hasAnyAuthority(ROLE_PREFIX + DELIVERY.name(), ROLE_PREFIX + ADMIN.name())
-        //.requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/deliver").hasAnyAuthority(ROLE_PREFIX + DELIVERY.name(), ROLE_PREFIX + ADMIN.name())
-        //.requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/cancel").hasAnyAuthority(ROLE_PREFIX + DELIVERY.name(), ROLE_PREFIX + ADMIN.name())
-        //.requestMatchers(POST, "/deliveryorder-manager/api/orders/{delivery_order_id}/qualify").hasAnyAuthority(ROLE_PREFIX + BUYER.name(), ROLE_PREFIX + ADMIN.name())
-
-        //SIN AUTENTICACION PRUEBA TEMPORAL
-        .requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/pick").permitAll()
-        .requestMatchers(PATCH, "/deliveryorder-manager/api/orders/*/pick").permitAll()
-        .requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/deliver").permitAll()
-        .requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/cancel").permitAll()
-        .requestMatchers(POST, "/deliveryorder-manager/api/orders/{delivery_order_id}/qualify").permitAll()
-
+        .requestMatchers(POST, "/deliveryorder-manager/api/orders").hasAnyAuthority(
+            ROLE_PREFIX + ADMIN.name()
+        )
+        .requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/pick").hasAnyAuthority(
+            ROLE_PREFIX + DELIVERY.name(),
+            ROLE_PREFIX + ADMIN.name()
+        )
+        .requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/deliver").hasAnyAuthority(
+            ROLE_PREFIX + DELIVERY.name(),
+            ROLE_PREFIX + ADMIN.name()
+        )
+        .requestMatchers(PATCH, "/deliveryorder-manager/api/orders/{delivery_order_id}/cancel").hasAnyAuthority(
+            ROLE_PREFIX + DELIVERY.name(),
+            ROLE_PREFIX + ADMIN.name()
+        )
+        .requestMatchers(POST, "/deliveryorder-manager/api/orders/{delivery_order_id}/qualify").hasAnyAuthority(
+            ROLE_PREFIX + BUYER.name(),
+            ROLE_PREFIX + ADMIN.name()
+        )
+        .requestMatchers(GET, "/deliveryorder-manager/api/orders/buyer").hasAnyAuthority(
+            ROLE_PREFIX + BUYER.name(),
+            ROLE_PREFIX + ADMIN.name()
+        )
+        .requestMatchers(GET, "/deliveryorder-manager/api/orders/buyer/{buyer_id}").hasAuthority(
+            ROLE_PREFIX + ADMIN.name()
+        )
+        .requestMatchers(GET, "/deliveryorder-manager/api/orders/deliver").hasAnyAuthority(
+            ROLE_PREFIX + DELIVERY.name(),
+            ROLE_PREFIX + ADMIN.name()
+        )
+        .requestMatchers(GET, "/deliveryorder-manager/api/orders/deliver/{deliver_id}").hasAuthority(
+            ROLE_PREFIX + ADMIN.name()
+        )
+        
         .anyRequest().authenticated()
 )
 

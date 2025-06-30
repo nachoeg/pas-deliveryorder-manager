@@ -43,4 +43,8 @@ public class DeliveryOrderResponse {
 
     // Cantidad solicitada del producto
     private Integer quantity;
+
+    private Double priceTotal; 
+
+    private String productName; 
 }
