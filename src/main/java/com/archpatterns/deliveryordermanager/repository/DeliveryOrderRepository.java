@@ -10,11 +10,9 @@ import java.util.List;
 @Repository
 public interface DeliveryOrderRepository extends JpaRepository<DeliveryOrder, Long> {
 
-    // Buscar órdenes por ID de comprador
-    List<DeliveryOrder> findAllByBuyer_Id(Long buyerId);
+    List<DeliveryOrder> findAllByBuyerId(Long buyerId);
 
-    // Buscar órdenes por ID de repartidor
-    List<DeliveryOrder> findAllByDeliver_Id(Long deliveryId);
+    List<DeliveryOrder> findAllByDeliverId(Long deliverId);
 
     // Buscar todas las órdenes con un estado específico (PENDING, DELIVERED, etc.)
     List<DeliveryOrder> findAllByStatus(DeliveryStatus status);

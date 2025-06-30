@@ -42,6 +42,8 @@ public class Util {
                 .deliveryId(order.getDeliver() != null ? order.getDeliver().getId() : null)
                 .productId(order.getCardItem().getProductId())
                 .quantity(order.getCardItem().getQuantity())
+                .priceTotal(order.getPriceTotal())     
+                .productName(order.getProductName()) 
                 .build();
     }
 }

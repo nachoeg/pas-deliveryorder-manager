@@ -23,7 +23,7 @@ WORKDIR /app
 COPY --from=builder /app/target/deliveryorder-manager*.jar app.jar
 
 # Exponer puerto
-EXPOSE 8080
+EXPOSE 8084
 
 # Comando para ejecutar la app
 ENTRYPOINT ["java", "-jar", "app.jar"]

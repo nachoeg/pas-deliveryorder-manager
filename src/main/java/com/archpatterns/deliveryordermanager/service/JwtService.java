@@ -50,6 +50,25 @@ public class JwtService {
         return email.equals(extractEmail(token)) && !isTokenExpired(token);
     }
 
+    public Long extractUserId(String token) {
+    try {
+        var claims = Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+        var userId = claims.get("userId");
+        if (userId != null) {
+            return Long.valueOf(userId.toString());
+        }
+        return null; // o podés lanzar una excepción si preferís
+    } catch (Exception ex) {
+        log.error("Error al extraer userId del token: {}", ex.getMessage());
+        return null;
+    }
+}
+
+
     private boolean isTokenExpired(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)

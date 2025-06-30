@@ -3,13 +3,13 @@ package com.archpatterns.deliveryordermanager.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name = "USER_APP")
+@Embeddable
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
-
-    @Id
     private Long id;
 }
+
+

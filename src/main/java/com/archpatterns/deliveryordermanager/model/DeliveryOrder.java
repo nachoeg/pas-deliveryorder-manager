@@ -40,18 +40,32 @@ public class DeliveryOrder {
     @Column(name = "STATUS")
     private DeliveryStatus status;
 
-    // Relaciones
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BUYER_ID")
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "BUYER_ID"))
+    })
     private User buyer;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "DELIVER_ID")
+    
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "DELIVER_ID"))
+    })
     private User deliver;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "CARD_ITEM_ID", referencedColumnName = "id")
+    @Embedded
+    @AttributeOverrides({
+        @AttributeOverride(name = "id", column = @Column(name = "CARDITEM_ID")),
+        @AttributeOverride(name = "productId", column = @Column(name = "CARDITEM_PRODUCT_ID")),
+        @AttributeOverride(name = "quantity", column = @Column(name = "CARDITEM_QUANTITY"))
+    })
     private CardItem cardItem;
+
+    @Column(name = "PRICE_TOTAL")
+    private Double priceTotal;
+
+    @Column(name = "PRODUCT_NAME")
+    private String productName;
+
 }
 
 
