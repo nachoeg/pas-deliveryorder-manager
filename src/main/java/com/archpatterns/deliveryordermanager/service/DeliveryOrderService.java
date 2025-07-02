@@ -3,6 +3,7 @@ package com.archpatterns.deliveryordermanager.service;
 import com.archpatterns.deliveryordermanager.dto.DeliveryOrderRequest;
 import com.archpatterns.deliveryordermanager.dto.DeliveryOrderResponse;
 import com.archpatterns.deliveryordermanager.dto.ChoreoData;
+import com.archpatterns.deliveryordermanager.dto.DataQueue;
 import com.archpatterns.deliveryordermanager.enums.DeliveryStatus;
 import com.archpatterns.deliveryordermanager.exceptions.DeliveryOrderException;
 
@@ -15,7 +16,7 @@ public interface DeliveryOrderService {
     DeliveryOrderResponse createOrder(DeliveryOrderRequest request) throws DeliveryOrderException;
 
     //crear nueva orden desde ChoreoData
-    void createOrderFromChoreoData(ChoreoData request) throws DeliveryOrderException;
+    void createOrderFromDataQueue(DataQueue request) throws DeliveryOrderException;
 
     // Buscar órdenes por ID del comprador
     List<DeliveryOrderResponse> getOrdersByBuyer(Long buyerId) throws DeliveryOrderException;

@@ -1,6 +1,7 @@
 package com.archpatterns.deliveryordermanager.service;
 
 import com.archpatterns.deliveryordermanager.dto.ChoreoData;
+import com.archpatterns.deliveryordermanager.dto.DataQueue;
 import com.archpatterns.deliveryordermanager.dto.DeliveryOrderRequest;
 import com.archpatterns.deliveryordermanager.dto.DeliveryOrderResponse;
 import com.archpatterns.deliveryordermanager.dto.ErrorDto;
@@ -62,36 +63,35 @@ public class DeliveryOrderServiceImpl implements DeliveryOrderService {
 
         return Util.convertToResponse(deliveryOrder);
     }
+@Override
+public void createOrderFromDataQueue(DataQueue data) throws DeliveryOrderException {
+    log.debug("Procesando DataQueue recibido: {}", data);
 
-    @Override
-    public void createOrderFromChoreoData(ChoreoData data) throws DeliveryOrderException {
-        log.debug("Procesando choreoData recibido: {}", data);
+    var buyer = User.builder()
+            .id(data.getBuyerId())
+            .build();
 
-        var buyer = User.builder()
-                .id(data.getBuyerId())
-                .build();
+    User deliver = null;
 
-        User deliver = null;
+    var cardItem = CardItem.builder()
+            .id(data.getCartItemId())
+            .productId(data.getProdId()) 
+            .quantity(data.getQuantity())
+            .build();
 
-        var cardItem = CardItem.builder()
-                .id(data.getCartItemId())
-                .productId(data.getProductId())
-                .quantity(data.getQuantity())
-                .build();
+    var deliveryOrder = DeliveryOrder.builder()
+            .buyer(buyer)
+            .deliver(deliver)
+            .status(DeliveryStatus.PENDING_ORDER)
+            .cardItem(cardItem)
+            .priceTotal(data.getPriceTotal())
+            .productName(data.getProdName()) 
+            .build();
 
-        var deliveryOrder = DeliveryOrder.builder()
-                .buyer(buyer)
-                .deliver(deliver)
-                .status(DeliveryStatus.PENDING_ORDER)
-                .cardItem(cardItem)
-                .priceTotal(data.getPriceTotal())
-                .productName(data.getProductName())
-                .build();
+    deliveryOrderRepository.save(deliveryOrder);
 
-        deliveryOrderRepository.save(deliveryOrder);
-
-        log.info("Orden creada correctamente con datos extendidos (priceTotal y productName)");
-    }
+    log.info("Orden creada correctamente con datos extendidos (priceTotal y prodName)");
+}
 
     @Override
     public List<DeliveryOrderResponse> getOrdersByBuyer(Long buyerId) throws DeliveryOrderException {
