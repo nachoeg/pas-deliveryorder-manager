@@ -1,6 +1,7 @@
 package com.archpatterns.deliveryordermanager.client;
 
-import com.archpatterns.deliveryordermanager.dto.ChoreoData;
+import com.archpatterns.deliveryordermanager.dto.Listdata;
+import com.archpatterns.deliveryordermanager.dto.DataQueue;
 import com.archpatterns.deliveryordermanager.exceptions.DeliveryOrderException;
 import com.archpatterns.deliveryordermanager.service.DeliveryOrderService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,19 +24,25 @@ public class Consumer {
 
         try {
             ObjectMapper mapper = new ObjectMapper();
-            ChoreoData choreoData = mapper.readValue(messageJson, ChoreoData.class);
+            Listdata listdata = mapper.readValue(messageJson, Listdata.class);
 
-            log.info("Deserialización exitosa, procesando creación de orden");
+            if (listdata != null && listdata.getListData() != null) {
+                for (DataQueue dq : listdata.getListData()) {
+                    log.info("Procesando item de carrito: {}", dq);
 
-            try {
-                deliveryOrderService.createOrderFromChoreoData(choreoData);
-                log.info("Orden generada correctamente a partir de la cola makeOrder");
-            } catch (DeliveryOrderException e) {
-                log.error("Error en la creación de la orden: {}", e.getMessage(), e);
+                    try {
+                        deliveryOrderService.createOrderFromDataQueue(dq);
+                        log.info("Orden creada correctamente para cartItemId={}", dq.getCartItemId());
+                    } catch (DeliveryOrderException e) {
+                        log.error("Error creando la orden para cartItemId={}: {}", dq.getCartItemId(), e.getMessage(), e);
+                    }
+                }
+            } else {
+                log.warn("La lista de datos recibida está vacía o nula.");
             }
 
         } catch (Exception e) {
-            log.error("Error deserializando JSON: {}", messageJson, e);
+            log.error("Error deserializando el mensaje JSON recibido: {}", messageJson, e);
         }
     }
 }
